@@ -78,7 +78,7 @@ Your feedback is very welcome. Please open an issue or pull request and I will l
 ### Package Installation
 Install the distribution version of abcde first to pull in the recommended dependencies and be set up for converting to flac and mp3:
 ```
-sudo apt install abcde flac eject eyed3 glyrc imagemagick
+sudo apt install abcde bsd-mailx- ffmpeg flac eject eyed3 glyrc imagemagick mkcue
 ```
 Then install my latest updated version from the github repo with all the bug fixes, workflow and metadata improvements:
 ```
