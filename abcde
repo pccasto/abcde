@@ -12,7 +12,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-VERSION='2.12.2'
+VERSION='2.12.3'
 
 usage ()
 {
@@ -3766,17 +3766,17 @@ do_embedalbumart()
 		# Find the output directory for multi track encodes:
 		if [ "$ONETRACK" != "y" ] ; then
 			if [ "$VARIOUSARTISTS" = "y" ] ; then
-				FINDPATH="$(eval echo "$VAOUTPUTFORMAT")"
+				FINDPATH="$(eval echo \""$VAOUTPUTFORMAT"\")"
 			else
-				FINDPATH="$(eval echo "$OUTPUTFORMAT")"
+				FINDPATH="$(eval echo \""$OUTPUTFORMAT"\")"
 			fi
 		fi
 		# Find the output directory for single track encodes:
 		if [ "$ONETRACK" = "y" ] ; then
 			if [ "$VARIOUSARTISTS" = "y" ] ; then
-				FINDPATH="$(eval echo "$VAONETRACKOUTPUTFORMAT")"
-				else
-				FINDPATH="$(eval echo "$ONETRACKOUTPUTFORMAT")"
+				FINDPATH="$(eval echo \""$VAONETRACKOUTPUTFORMAT"\")"
+			else
+				FINDPATH="$(eval echo \""$ONETRACKOUTPUTFORMAT"\")"
 			fi
 		fi
 
