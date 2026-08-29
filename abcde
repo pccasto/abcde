@@ -671,7 +671,7 @@ do_replaygain()
 				TRACKFILE="$(mungetrackname "$TRACKNAME")"
 				ARTISTFILE="$(mungeartistname "$TRACKARTIST")"
 				ALBUMFILE="$(mungealbumname "$DALBUM")"
-				GENRE="$(mungegenre "$GENRE")"
+				GENRE="$(mungegenre "$CDGENRE")"
 				YEAR=${CDYEAR:-$CDYEAR}
 				gettracknum
 				if [ "$ONETRACK" = "y" ]; then
@@ -1843,7 +1843,7 @@ do_move ()
 		ALBUMFILE="$(mungealbumname "$DALBUM")"
 		ARTISTFILE="$(mungeartistname "$TRACKARTIST")"
 		TRACKFILE="$(mungetrackname "$TRACKNAME")"
-		GENRE="$(mungegenre "$GENRE")"
+		GENRE="$(mungegenre "$CDGENRE")"
 		YEAR=${CDYEAR:-$CDYEAR}
 		# If we want to start the tracks with a given number, we need to modify
 		# the TRACKNUM value before evaluation
@@ -1981,7 +1981,7 @@ do_playlist ()
 		for LASTTRACK in $TRACKQUEUE; do :; done
 		ALBUMFILE="$(mungealbumname "$DALBUM")"
 		ARTISTFILE="$(mungeartistname "$DARTIST")"
-		GENRE="$(mungegenre "$GENRE")"
+		GENRE="$(mungegenre "$CDGENRE")"
 		YEAR=${CDYEAR:-$CDYEAR}
 		if [ "$VARIOUSARTISTS" = "y" ] ; then
 			PLAYLISTFILE="$(eval echo "$VAPLAYLISTFORMAT")"
@@ -2032,6 +2032,9 @@ do_playlist ()
 				TRACKFILE="$(mungetrackname "$TRACKNAME")"
 				ARTISTFILE="$(mungeartistname "$TRACKARTIST")"
 				ALBUMFILE="$(mungealbumname "$DALBUM")"
+				GENRE="$(mungegenre "$CDGENRE")"
+				YEAR=${CDYEAR:-$CDYEAR}
+
 				# If we want to start the tracks with a given number, we need to modify the
 				# TRACKNUM value before evaluation
 				gettracknum
@@ -2176,6 +2179,7 @@ abcde.mkcue () {
 	echomsf () {
 		printf "$1%02i:%02i:%02i\n" $(($2/4500)) $((($2/75)%60)) $(($2%75))
 	}
+	vecho "in abcde.mkcue"
 
 	local MODE DISCID TRACKS
 	local i OFFSET LBA
@@ -2191,6 +2195,9 @@ abcde.mkcue () {
 	TRACKFILE="$(mungetrackname "$TRACKNAME")"
 	ARTISTFILE="$(mungeartistname "$TRACKARTIST")"
 	ALBUMFILE="$(mungealbumname "$DALBUM")"
+	GENRE="$(mungegenre "$CDGENRE")"
+	YEAR=${CDYEAR:-$CDYEAR}
+
 	if [ "$ONETRACK" = "y" ]; then
 		if [ "$VARIOUSARTISTS" = "y" ]; then
 			CUEWAVFILE="$(eval echo \""$VAONETRACKOUTPUTFORMAT"\" | sed -e 's@^.*/@@').$OUTPUT"
@@ -2201,6 +2208,13 @@ abcde.mkcue () {
 	else
 		CUEWAVFILE="dummy.wav"
 	fi
+
+	vvecho "Track file is $TRACKFILE"
+	vvecho "Artist file is $ARTISTFILE"
+	vvecho "Album file is $ALBUMFILE"
+	vvecho "Genre is $GENRE"
+	vvecho "Year is $YEAR"
+	vecho "CUEWAVFILE is $CUEWAVFILE"
 
 	set -- $CDDBTRACKINFO
 
@@ -2578,7 +2592,7 @@ do_cleancue()
 		CUEFILE_OUT=$CUEFILE_IN.out
 		### FIXME ### checkstatus cddb
 		if [ -e "$CDDBDATA" ]; then
-			vecho "Adding metadata to the cue file..."
+			echo "Adding metadata to the cue file..."
 			# FIXME It doesn't preserve spaces! Why?
 			# FIXME parse $track into PERFORMER and TITLE - abcde already has code for this?
 			n=1
@@ -2604,8 +2618,8 @@ do_cleancue()
 					if [ "$VARIOUSARTISTS" = "y" ]; then
 						# shamefully duplicated from splitvarious ()
 						case "$VARIOUSARTISTSTYLE" in
-					                forward)
-					                        DTITLEARTIST="$(echo "$TRACKTITLE" | sed 's- / -~-g')"
+					        forward)
+					            DTITLEARTIST="$(echo "$TRACKTITLE" | sed 's- / -~-g')"
 								TRACKARTIST="$(echo "$DTITLEARTIST" | cut -f1 -d~)"
 								TRACKNAME="$(echo "$DTITLEARTIST" | cut -f2 -d~)"
 								;;
@@ -2655,6 +2669,8 @@ do_cleancue()
 					TRACKFILE="$(mungetrackname "$TRACKNAME")"
 					ARTISTFILE="$(mungeartistname "$TRACKARTIST")"
 					ALBUMFILE="$(mungealbumname "$DALBUM")"
+					GENRE="$(mungegenre "$CDGENRE")"
+					YEAR=${CDYEAR:-$CDYEAR}
 
 					if [ "$VARIOUSARTISTS" = "y" ]; then
 						OUTPUTFILE="$(eval echo \""$VAONETRACKOUTPUTFORMAT"\" | sed -e 's@^.*/@@').$OUTPUT"
@@ -2671,6 +2687,7 @@ do_cleancue()
 			IFS="$OIFS"
 			mv "$CUEFILE_OUT" "$CUEFILE_IN"
 			echo "cleancuefile" >> "${ABCDETEMPDIR}/status"
+			echo "Cue file cleaned up and metadata added: ${CUEFILE_IN}."
 		fi
 	fi
 }
@@ -3564,7 +3581,7 @@ do_getalbumart()
 		# set variables
 		ALBUMFILE="$(mungealbumname "$DALBUM")"
 		ARTISTFILE="$(mungeartistname "$DARTIST")"
-		GENRE="$(mungegenre "$GENRE")"
+		GENRE="$(mungegenre "$CDGENRE")"
 		YEAR=${CDYEAR:-$CDYEAR}
 		vvecho "${ALBUMFILE} - ${ARTISTFILE} - ${GENRE} - ${YEAR} - ${CDDBMETHOD}"
 		# have we got a musicbrainz mbid or amazon asin?
@@ -3757,7 +3774,7 @@ do_embedalbumart()
 	# Set variables:
 	ALBUMFILE="$(mungealbumname "$DALBUM")"
 	ARTISTFILE="$(mungeartistname "$DARTIST")"
-	GENRE="$(mungegenre "$GENRE")"
+	GENRE="$(mungegenre "$CDGENRE")"
 	YEAR=${CDYEAR:-$CDYEAR}
 
 	# Allow for multiple output formats:
