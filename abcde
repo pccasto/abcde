@@ -4077,7 +4077,7 @@ vecho ()
 if [ x"$EXTRAVERBOSE" != "x" ] && [ "$EXTRAVERBOSE" -gt 0 ] ; then
 	case $1 in
 		warning) shift ; log warning "$@" ;;
-		*) >&4 echo "$@" ;;
+		*) >&4 echo "[Verbose] $@" ;;
 	esac
 fi
 }
@@ -4090,25 +4090,25 @@ vvecho ()
 if [ x"$EXTRAVERBOSE" != "x" ] && [ "$EXTRAVERBOSE" -gt 1 ] ; then
 	case $1 in
 		warning) shift ; log warning "$@" ;;
-		*) >&4 echo "$@" ;;
+		*) >&4 echo "[Debug] $@" ;;
 	esac
 fi
 }
 
-# decho [message]
+# decho [message] - removed in preference to vvecho.
 #
 # decho outputs a debug message if DEBUG is selected
-decho ()
-{
-if [ x"$DEBUG" != "x" ]; then
-	if echo "$1" | grep "^\[" > /dev/null 2>&1 ; then
-		DEBUGECHO=$(echo "$@" | tr -d '[]')
-		echo >&4 "[DEBUG] $DEBUGECHO: $(eval echo \\$${DEBUGECHO})"
-	else
-		echo >&4 "[DEBUG] $1"
-	fi
-fi
-}
+#decho ()
+#{
+#if [ x"$DEBUG" != "x" ]; then
+#	if echo "$1" | grep "^\[" > /dev/null 2>&1 ; then
+#		DEBUGECHO=$(echo "$@" | tr -d '[]')
+#		echo >&4 "[DEBUG] $DEBUGECHO: $(eval echo \\$${DEBUGECHO})"
+#	else
+#		echo >&4 "[DEBUG] $1"
+#	fi
+#fi
+#}
 
 # User-redefinable functions
 # Custom filename munging:
@@ -4631,7 +4631,7 @@ while getopts 1a:bBc:C:d:DefgGhj:klLmMnNo:pPQ:r:s:S:t:T:UvVxX:w:W:z opt ; do
 		   STARTTRACKNUMBERTAG="y"
 		   vecho Comment is "${COMMENT}" >&2
 		   ;;
-		z) DEBUG=y ; CDROMREADERSYNTAX=debug ; EJECTCD="n" ;;
+		z) CDROMREADERSYNTAX=debug ; EJECTCD="n" ;;
 		?) usage; exit ;;
 	esac
 done
@@ -5422,14 +5422,20 @@ if [ "$USEPIPES" = "y" ]; then
 		aac)
 			PIPEENCODERSVARCHECK="PIPE_$AACENCODERSYNTAX" ;;
 	esac
-	decho "PIPERIPPERSVARCHECK: $( eval echo "\$$PIPERIPPERSVARCHECK" )"
+	# decho "PIPERIPPERSVARCHECK: $( eval echo "\$$PIPERIPPERSVARCHECK" )"
+	if CDROMREADERSYNTAX=debug; then
+		echo "[DEBUG] PIPERIPPERSVARCHECK: $( eval echo "\$$PIPERIPPERSVARCHECK" )"
+	fi
 	if [ "$( eval echo "\$$PIPERIPPERSVARCHECK" )" = "$" ] || \
 	   [ "$( eval echo "\$$PIPERIPPERSVARCHECK" )" = "" ] ; then
 		log error "no support for pipes with given ripper"
 		log error "read the FAQ file from the source tarball to get help."
 		exit 1;
 	fi
-	decho "PIPEENCODERSVARCHECK: $( eval echo "\$$PIPEENCODERSVARCHECK" )"
+	# decho "PIPEENCODERSVARCHECK: $( eval echo "\$$PIPEENCODERSVARCHECK" )"
+	if CDROMREADERSYNTAX=debug; then
+		echo "[DEBUG] PIPEENCODERSVARCHECK: $( eval echo "\$$PIPEENCODERSVARCHECK" )"
+	fi
 	if [ "$( eval echo "\$$PIPEENCODERSVARCHECK" )" = "$" ] || \
 	   [ "$( eval echo "\$$PIPEENCODERSVARCHECK" )" = "" ] ; then
 		log error "no support for pipes with given encoder"
