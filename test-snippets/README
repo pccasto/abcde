@@ -1,0 +1,6 @@
+Directory for test code snippets
+
+Allows for testing individual functions, 
+without having to fully invoke abcde.
+
+Not needed/wanted as part of deployment.
