@@ -2671,6 +2671,12 @@ do_cleancue()
 					ALBUMFILE="$(mungealbumname "$DALBUM")"
 					GENRE="$(mungegenre "$CDGENRE")"
 					YEAR=${CDYEAR:-$CDYEAR}
+					vvecho "Track file is $TRACKFILE"
+					vvecho "Artist file is $ARTISTFILE"
+					vvecho "Album file is $ALBUMFILE"
+					vvecho "Genre is $GENRE"
+					vvecho "Year is $YEAR"
+
 
 					if [ "$VARIOUSARTISTS" = "y" ]; then
 						OUTPUTFILE="$(eval echo \""$VAONETRACKOUTPUTFORMAT"\" | sed -e 's@^.*/@@').$OUTPUT"
