@@ -2192,29 +2192,11 @@ abcde.mkcue () {
 	fi
 
 	vecho "One track is $ONETRACK"
-	TRACKFILE="$(mungetrackname "$TRACKNAME")"
-	ARTISTFILE="$(mungeartistname "$TRACKARTIST")"
-	ALBUMFILE="$(mungealbumname "$DALBUM")"
-	GENRE="$(mungegenre "$CDGENRE")"
-	YEAR=${CDYEAR:-$CDYEAR}
+	# too early to know the output format, so we just use a dummy file for now
+	# this is consistent with the way mkcue works in this implementation.
+	CUEWAVFILE="dummy.wav"
 
-	if [ "$ONETRACK" = "y" ]; then
-		if [ "$VARIOUSARTISTS" = "y" ]; then
-			CUEWAVFILE="$(eval echo \""$VAONETRACKOUTPUTFORMAT"\" | sed -e 's@^.*/@@').$OUTPUT"
-		else
-			CUEWAVFILE="$(eval echo \""$ONETRACKOUTPUTFORMAT"\" | sed -e 's@^.*/@@').$OUTPUT"
-		fi
-		vecho "Cue wav file is $CUEWAVFILE"
-	else
-		CUEWAVFILE="dummy.wav"
-	fi
 
-	vvecho "Track file is $TRACKFILE"
-	vvecho "Artist file is $ARTISTFILE"
-	vvecho "Album file is $ALBUMFILE"
-	vvecho "Genre is $GENRE"
-	vvecho "Year is $YEAR"
-	vecho "CUEWAVFILE is $CUEWAVFILE"
 
 	set -- $CDDBTRACKINFO
 
@@ -2676,7 +2658,6 @@ do_cleancue()
 					vvecho "Album file is $ALBUMFILE"
 					vvecho "Genre is $GENRE"
 					vvecho "Year is $YEAR"
-
 
 					if [ "$VARIOUSARTISTS" = "y" ]; then
 						OUTPUTFILE="$(eval echo \""$VAONETRACKOUTPUTFORMAT"\" | sed -e 's@^.*/@@').$OUTPUT"
