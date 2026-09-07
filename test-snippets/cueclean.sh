@@ -117,12 +117,13 @@ source <($PF_HOME/pull-functions.sh inspect do_discid do_cddbedit do_cleancue ge
 
 
 
-# # rewrite the functions !!!
-# source instrumentation.sh
+# # rewrite the functions !!! - this can go into abcde if doing dynamic troubleshooting
+# PF_HOME=~paul/git/bash-tools
+# source $PF_HOME/inspect-functions.sh
 # don't need to source the functions that are not being decorated, instrumented or inspected when this code is added to abcde.
-# source <(./pull-functions.sh decorate  makeids get_first get_last)
-# source <(./pull-functions.sh instrument do_musicbrainz_read getcddbinfo splitvarious)
-# source <(./pull-functions.sh inspect do_discid do_cddbedit do_cleancue getcddbinfo) # the inspect doesn't seem to work with getcddbinfo...
+# source <($PF_HOME/pull-functions.sh decorate  makeids get_first get_last)
+# source <($PF_HOME/pull-functions.sh instrument do_musicbrainz_read getcddbinfo splitvarious)
+# source <($PF_HOME/pull-functions.sh inspect do_discid do_cddbedit do_cleancue getcddbinfo) # the inspect doesn't seem to work with getcddbinfo...
 
 
 read -p "starting - Press [Enter] key to continue..."
