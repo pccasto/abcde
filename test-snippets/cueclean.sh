@@ -107,11 +107,13 @@ DOCUE=y ; MAKECUEFILE=y
 
 exec 4>&1
 
-. instrumentation.sh
-source <(./pull-functions.sh mungetrackname mungefilename mungeartistname mungealbumname mungegenre mungecddb checkstatus vecho vvecho log)
-source <(./pull-functions.sh decorate  makeids get_first get_last do_musicbrainz_read)
-source <(./pull-functions.sh instrument do_musicbrainz_read getcddbinfo splitvarious)
-source <(./pull-functions.sh inspect do_discid do_cddbedit do_cleancue getcddbinfo)
+PF_HOME=~paul/git/bash-tools
+
+source $PF_HOME/inspect-functions.sh
+source <($PF_HOME/pull-functions.sh mungetrackname mungefilename mungeartistname mungealbumname mungegenre mungecddb checkstatus vecho vvecho log)
+source <($PF_HOME/pull-functions.sh decorate  makeids get_first get_last do_musicbrainz_read)
+source <($PF_HOME/pull-functions.sh instrument do_musicbrainz_read getcddbinfo splitvarious)
+source <($PF_HOME/pull-functions.sh inspect do_discid do_cddbedit do_cleancue getcddbinfo)
 
 
 
