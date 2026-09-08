@@ -2574,7 +2574,7 @@ do_cleancue()
 		CUEFILE_OUT=$CUEFILE_IN.out
 		### FIXME ### checkstatus cddb
 		if [ -e "$CDDBDATA" ]; then
-			echo "Adding metadata to the cue file..."
+			vecho "Adding metadata to the cue file..."
 			# FIXME It doesn't preserve spaces! Why?
 			# FIXME parse $track into PERFORMER and TITLE - abcde already has code for this?
 			n=1
@@ -2674,7 +2674,7 @@ do_cleancue()
 			IFS="$OIFS"
 			mv "$CUEFILE_OUT" "$CUEFILE_IN"
 			echo "cleancuefile" >> "${ABCDETEMPDIR}/status"
-			echo "Cue file cleaned up and metadata added: ${CUEFILE_IN}."
+			vecho "Cue file cleaned up and metadata added: ${CUEFILE_IN}."
 		fi
 	fi
 }
@@ -4142,7 +4142,7 @@ mungealbumname ()
 # Custom genre munging:
 mungegenre ()
 {
-	echo "$CDGENRE" | tr "[:upper:]" "[:lower:]"
+	echo "$@" | tr "[:upper:]" "[:lower:]"
 }
 
 # Custom cddb munging:
