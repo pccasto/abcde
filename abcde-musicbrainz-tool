@@ -16,9 +16,23 @@ use utf8;
 use POSIX qw(ceil);
 use Digest::SHA;
 use MusicBrainz::DiscID;
-use WebService::MusicBrainz 1.0.4;
+#use WebService::MusicBrainz 1.0.4; # now pull in dynamically to check for version 1.0.10
 use Getopt::Long;
 use Pod::Usage;
+
+use Module::Load::Conditional qw(can_load);
+# Attempt to load Version 1.0.10 to pick up retries
+if ( can_load( modules => { 'WebService::MusicBrainz' => 1.0.10 } ) ) {
+	# the version is a minimum so this is future-proof for 1.0.11 ...
+    # this still does not verify/guaruntee availability of mojo retries
+	# but it's a start....
+    WebService::MusicBrainz->import(); 
+} 
+else {
+    warn "WebService::MusicBrainz 1.0.10 not found. Retries will not be available...\n";
+    require WebService::MusicBrainz;
+    WebService::MusicBrainz->import();
+}
 
 my $FRAMES_PER_S = 75;
 
