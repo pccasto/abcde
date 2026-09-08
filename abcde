@@ -1497,8 +1497,8 @@ do_encode ()
 						esac
 						;;
 					*)
-						vecho -n "DISTMP3:"
-						vecho "$DISTMP3 $DISTMP3OPTS $2 $IN $OUT >/dev/null 2>&1"
+						vecho -n "DISTMP3: "
+						vecho -c "$DISTMP3 $DISTMP3OPTS $2 $IN $OUT >/dev/null 2>&1"
 						$RUN_COMMAND nice $DISTMP3NICE $DISTMP3 $DISTMP3OPTS "$2" "$IN" "$OUT" > /dev/null 2>&1
 					;;
 				esac
@@ -2236,7 +2236,7 @@ do_discid ()
 {
 	SUBMITURL=
 	if [ -z "${CDDBDISCID}" ]; then
-		vecho -n "Getting CD track info... "
+		vecho "Getting CD track info... "
 		# In OSX, unmount the disc before a query
 		if [ "$OSFLAVOUR" = "OSX" ]; then
 			diskutil unmount "${CDROM#/dev/}"
@@ -3124,7 +3124,7 @@ do_cddb_read ()
 			;;
 		210|211)
 			# Multiple exact, (possibly multiple) inexact matches
-			vecho -n "Retrieving multiple matches... "
+			vecho "Retrieving multiple matches... "
 			grep -v '^[.]$' "${SOURCE_WORKDIR}/cddbquery" | (
 				# IN A SUB-SHELL - VARIABLES MODIFIED
 				# HERE DO NOT PERSIST IN THE PARENT
@@ -4073,28 +4073,34 @@ do_cdspeed ()
 	fi
 }
 
-# vecho [message]
+# vecho [-c|-n] [message]
 #
 # vecho outputs a message if EXTRAVERBOSE is 1 or more
+# -c is for a continuation line, -n is for no newline
 vecho ()
 {
 if [ x"$EXTRAVERBOSE" != "x" ] && [ "$EXTRAVERBOSE" -gt 0 ] ; then
 	case $1 in
 		warning) shift ; log warning "$@" ;;
-		*) >&4 echo "$@" ;;
+        -c) shift ; >&4 echo              "$@" ;; # for a continuation line
+		-n) shift ; >&4 echo -n "[Verbose] $@" ;;
+		*)          >&4 echo    "[Verbose] $@" ;;
 	esac
 fi
 }
 
-# vvecho [message]
+# vvecho [-c|-n] [message]
 #
 # vvecho outputs a message if EXTRAVERBOSE is 2 or more
+# -c is for a continuation line, -n is for no newline
 vvecho ()
 {
 if [ x"$EXTRAVERBOSE" != "x" ] && [ "$EXTRAVERBOSE" -gt 1 ] ; then
 	case $1 in
 		warning) shift ; log warning "$@" ;;
-		*) >&4 echo "$@" ;;
+		-c) shift ; >&4 echo               "$@" ;; # for a continuation line
+		-n) shift ; >&4 echo -n "[Verbose2] $@" ;;
+		*)          >&4 echo    "[Verbose2] $@" ;;
 	esac
 fi
 }
@@ -5523,7 +5529,7 @@ if [ "$DOREAD" = "y" ]; then
 	# User-definable function to set some things. Use it for
 	#  - closing the CD tray with eject -t
 	#  - set the CD speed value with eject -x
-	vecho -n "Executing customizable pre-read function... "
+	vecho "Executing customizable pre-read function... "
 
 	pre_read # Execute the user-defined pre-read function. Close the CD with it.
 
